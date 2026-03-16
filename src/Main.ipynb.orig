@@ -1,0 +1,1666 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "slo6w16vace5d6dflj774c",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "# CSE2530 Computational Intelligence\n",
+    "## Assignment 1: Ant Colony Optimization and Genetic Algorithms"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "6yn4qzrmaetzjvvbe812cd",
+    "vocVersion": 1.1
+   },
+   "source": [
+<<<<<<< HEAD
+    "<div style=\"background-color:#00000b\">\n",
+=======
+    "<div style=\"background-color:#f1be3e\">\n",
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+    "\n",
+    "_Fill in your group number **from Brightspace**, names, and student numbers._\n",
+    "    \n",
+    "|    Group   |           X          |\n",
+    "|------------|----------------------|\n",
+    "| Student A  |        XXXXXXX       |\n",
+<<<<<<< HEAD
+    "| Student B  |        XXXXXXX       |\n",
+=======
+    "| Student B  |        Diana Ghisoiu 6240895       |\n",
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+    "| Student C  |        XXXXXXX       |\n",
+    "| Student D  |        XXXXXXX       |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "6te2ui7xuvpkwemkbgw5ns",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 4,
+=======
+   "execution_count": 0,
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "psowfcx6aoofbbzesvhumh",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "You may only use numpy to implement your algorithms\n",
+    "You can make use of any other libraries for miscellaneous functions, e.g. to create the visual aids.\n",
+    "Put all of your imports in this code block.\n",
+    "\"\"\"\n",
+    "import numpy as np\n",
+    "import random\n",
+    "import sys\n",
+    "import time\n",
+    "\n",
+    "\"\"\"\n",
+    "The following classes are fully implemented in their own files and you should not change them.\n",
+    "Nonetheless, we encourage you to check how they work; this will help you get started.\n",
+    "\"\"\"\n",
+    "from Coordinate import Coordinate\n",
+    "from Direction import Direction\n",
+    "from PathSpecification import PathSpecification\n",
+    "from Route import Route\n",
+    "from SurroundingPheromone import SurroundingPheromone\n",
+    "from TSPData import TSPData"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "p6my4ztxg39ckty2mqk55m",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "## Part 1: The Travelling Robot Problem\n",
+    "### 1.1 Problem Analysis\n",
+    "#### Question 1:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "There are multiple variants of the TSP problem. The classic problem may be formally formulated as follows:\n",
+    "<br>\n",
+    ">Given a complete graph $G=(V, A)$, and a distance function $d: A \\rightarrow$ $R^+$, we are required to find a Hamiltonian circuit of minimal cost. A Hamiltonian circuit is a cycle that visits every node exactly once, except the first node. \n",
+    "<br>\n",
+    "\n",
+    "__[Extra]__: Given a fixed endpoint, this can be converted to a problem of finding the Hamiltonian path by adding a dummy node, connected only to the endpoint (all other nodes have very high cost on these connections, such that they may be ignore). If we are indifferent to any specific endpoint, we either remove the dummy node entirely, or connect it to all nodes with a cost of $0$.\n",
+    "<br>\n",
+    "\n",
+    "__[Errata]__: Our problem differs in a few ways from the definition given above. See below. (The graph may be constructed to avoid these issues, however.)"
+=======
+   "metadata": {
+    "cellIdentifier": "pkn6ns3ikgky1pezthqjkb",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "w1b00jo33fl1yij949guxyh",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "__Differences:__\n",
+    "1. We do not need to find a minimum cost circuit, a path is enough - that is, the robot needn't return to its starting position;\n",
+    "1. The robot may pass through the same node (product) multiple times on its optimal path;\n",
+    "1. The start point and end point are fixed. We only care about what is in the middle (i.e. the products), so that the chromosome will stay the same, but the fitness calculator will also have to add the cost from the start to the first product and from the last product to the end."
+=======
+   "metadata": {
+    "cellIdentifier": "r8o22d94tiroj3yaky5mt8",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "139f17ol2u1gvoe04lhyr3",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 3"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "[NOT ANSWERED]"
+=======
+   "metadata": {
+    "cellIdentifier": "3fywxrrwp7qmu2ipall54b",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "xdvu7em92ahxwm3twd5r9f",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 1.2 Genetic Algorithm"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 13,
+=======
+   "execution_count": 8,
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "4dmijeuwmij4h1ot8ga5ex",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": [
+    "# TSP problem solver using genetic algorithms.\n",
+    "class GeneticAlgorithm:\n",
+<<<<<<< HEAD
+    "    rng = None\n",
+=======
+    "\n",
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+    "    \"\"\"\n",
+    "    Constructs a new 'genetic algorithm' object.\n",
+    "    @param generations: the amount of generations.\n",
+    "    @param pop_size: the population size.\n",
+<<<<<<< HEAD
+    "    @param x_prob:\n",
+    "    @param mut_prob:\n",
+    "    @param random_seed:\n",
+    "    \"\"\"\n",
+    "    def __init__(self, generations, pop_size, x_prob, mut_prob, random_seed, elitist):\n",
+    "        self.generations = generations\n",
+    "        self.pop_size = pop_size\n",
+    "        self.x_prob = x_prob\n",
+    "        self.mut_prob = mut_prob\n",
+    "        self.rng = np.random.default_rng(random_seed)\n",
+    "        self.elitist = elitist\n",
+    "\n",
+    "    \"\"\"\n",
+    "    This method gives a score to a certain chromosome.\n",
+    "    @param tsp_data: the data describing the problem.\n",
+    "    @param chromosome: a permutation of the products (a certain order of visiting them) (0-indexed)\n",
+    "    \"\"\"\n",
+    "    def cost(self, tsp_data, chromosome):\n",
+    "        size = len(chromosome)\n",
+    "        #chromosome = np.asarray(chromosome).astype(np.int64)\n",
+    "        assert not isinstance(chromosome[0], float), \"[FTINESS] Chromosome composed of floats instead of ints\"\n",
+    "        cost = tsp_data.start_distances[chromosome[0]]\n",
+    "        for i in range(size - 1):\n",
+    "            cost += tsp_data.distances[chromosome[i]][chromosome[i + 1]]\n",
+    "\n",
+    "        cost += tsp_data.end_distances[chromosome[size - 1]] + size\n",
+    "        assert cost >= 0, \"[FITNESS] Cost becomes negative\"\n",
+    "        return cost\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Generates the members of the original population - random permutations. Seed of random given above for reproducibility.\n",
+    "    @param tsp_data: the data describing the problem.\n",
+    "    \"\"\"\n",
+    "    def initialize_population(self, tsp_data):\n",
+    "        # amount of products => size of chromosome\n",
+    "        product_count = len(tsp_data.product_locations)\n",
+    "        pops = [self.rng.permutation(product_count) for i in range(self.pop_size)]\n",
+    "        return pops\n",
+    "\n",
+    "    \"\"\"\n",
+    "    This method implements the Order crossover operator (OX1 for short).\n",
+    "    @param p_1: parent 1.\n",
+    "    @param p_2: parent 2.\n",
+    "    @return the generated offspring (I'll only generate one offspring).\n",
+    "    \"\"\"\n",
+    "    def ox1(self, p_1, p_2):\n",
+    "        n = len(p_1)\n",
+    "        # pick random tour from parent 1\n",
+    "        start = self.rng.integers(0, n)\n",
+    "        end = self.rng.integers(start + 1, n + 1) # exclusive\n",
+    "        visited = [False for i in range(n)]\n",
+    "        offspring = [None for i in range(n)]\n",
+    "        # insert (sub)tour\n",
+    "        for i in range(start, end):\n",
+    "            offspring[i] = p_1[i]\n",
+    "            visited[p_1[i]] = True\n",
+    "\n",
+    "        # rest (starting with part after tour)\n",
+    "        idx_p2 = end - start\n",
+    "        for i in range(n - (end - start)):\n",
+    "            while(visited[p_2[idx_p2]]):\n",
+    "                idx_p2 = (idx_p2 + 1) % n\n",
+    "\n",
+    "            offspring[(end + i) % n] = p_2[idx_p2]\n",
+    "            visited[p_2[idx_p2]] = True\n",
+    "\n",
+    "        return offspring\n",
+    "\n",
+    "    \"\"\"\n",
+    "    This method implements the Genetic Edge Recombination crossover operator (ER for short). Don't use because it sucks.\n",
+    "    @param p_1: parent 1.\n",
+    "    @param p_2: parent 2.\n",
+    "    @return the generated offspring.\n",
+    "    \"\"\"\n",
+    "    def er(self, p_1, p_2):\n",
+    "        n = len(p_1)\n",
+    "        # create edge map for the products\n",
+    "        # I assume first product is not circularly connected with the last\n",
+    "        edge_map = [[] for i in range(n)]\n",
+    "        for i in range(n):\n",
+    "            pid1 = p_1[i]\n",
+    "            pid2 = p_2[i]\n",
+    "            # +1 because of count_nonzero\n",
+    "            if i > 0:\n",
+    "                edge_map[pid1].append(p_1[i - 1] + 1)\n",
+    "                edge_map[pid2].append(p_2[i - 1] + 1)\n",
+    "\n",
+    "            if i < n - 1:\n",
+    "                edge_map[pid1].append(p_1[i + 1] + 1)\n",
+    "                edge_map[pid2].append(p_2[i + 1] + 1)\n",
+    "\n",
+    "        # create offspring from parents\n",
+    "        child = [None] * n\n",
+    "        included = [False] * n\n",
+    "        crt = p_1[0] # deterministically pick first from p_1, doesn't really matter\n",
+    "        included[crt] = True\n",
+    "        child[0] = crt\n",
+    "        for i in range(1, n):\n",
+    "            # smallest amount of edges left (first found breaks ties)\n",
+    "            low = np.argmin([((n + 1) if included[j] else np.count_nonzero(edge_map[j])) for j in range(n)])\n",
+    "            included[low] = True\n",
+    "            edge_map = [list(filter(lambda x: x != low, edge_map[j])) for j in range(n)] # remove all occurrences of this product\n",
+    "            child[i] = low\n",
+    "\n",
+    "        return child\n",
+    "    \n",
+    "    \"\"\"\n",
+    "    Mutates the chromosome with the Inversion Mutation (IVM) operator.\n",
+    "    \"\"\"\n",
+    "    def ivm(self, chromosome):\n",
+    "        n = len(chromosome)\n",
+    "        # first pick a random tour\n",
+    "        start = self.rng.integers(0, n)\n",
+    "        end = self.rng.integers(start + 1, n + 1) # end is exclusive\n",
+    "\n",
+    "        # (subtour is also reversed)\n",
+    "        tour = chromosome[start:end]\n",
+    "\n",
+    "        # remove tour from chromosome\n",
+    "        mut_c = np.r_[chromosome[0:start], chromosome[end:n]]\n",
+    "        assert len(mut_c) == n - (end - start), \"[IVM] Partial step produces mutated chromosome of unexpected length\"\n",
+    "        # pick random position to insert the tour\n",
+    "        idx = self.rng.integers(0, len(mut_c) + 1)\n",
+    "        mut_c = np.insert(mut_c, idx, tour[::-1])\n",
+    "        assert len(mut_c) == n, \"[IVM] Length of mutated chromosome doesn't match original length\"\n",
+    "        return mut_c\n",
+    "        \n",
+    "    \"\"\"\n",
+    "    Generate offspring from the given parents, using the ER operator\n",
+    "    @param p_1: parent 1.\n",
+    "    @param p_2: parent 2.\n",
+    "    @return the generated offspring.\n",
+    "    \"\"\"\n",
+    "    def generate_offspring(self, tsp_data, parents, costs):\n",
+    "        n = self.pop_size\n",
+    "        mp = self.mut_prob\n",
+    "        xp = self.x_prob\n",
+    "\n",
+    "        cost_idx = [(costs[i], i) for i in range(n)]\n",
+    "        cost_idx = sorted(cost_idx, key=lambda x: x[0])\n",
+    "        t_size = 5 # amount of participants in tournament\n",
+    "        new_gen = [None for i in range(n)]\n",
+    "        for i in range(n):\n",
+    "            # pick two random parents by means of tournament\n",
+    "            c_val_1 = n\n",
+    "            c_val_2 = n\n",
+    "            for part in range(t_size):\n",
+    "                c_val_1 = min(c_val_1, self.rng.integers(0, n))\n",
+    "                c_val_2 = min(c_val_2, self.rng.integers(0, n))\n",
+    "\n",
+    "            parent_1 = parents[cost_idx[c_val_1][1]]\n",
+    "            parent_2 = parents[cost_idx[c_val_2][1]]\n",
+    "            new_gen[i] = parent_1 # default in case no crossover happens\n",
+    "\n",
+    "            # crossover\n",
+    "            if self.rng.random() < xp:\n",
+    "                new_gen[i] = self.ox1(p_1=parent_1, p_2=parent_2)\n",
+    "\n",
+    "            # mutation\n",
+    "            if self.rng.random() < mp:\n",
+    "                new_gen[i] = self.ivm(new_gen[i])\n",
+    "\n",
+    "            if isinstance(new_gen[i], np.ndarray):\n",
+    "                new_gen[i] = new_gen[i].tolist()\n",
+    "\n",
+    "            # casting bonanza\n",
+    "            for j in range(len(new_gen[i])):\n",
+    "                new_gen[i][j] = int(new_gen[i][j])\n",
+    "\n",
+    "            assert not isinstance(new_gen[i][0], float), \"[OFFSPRING GENERATION] tf\"\n",
+    "        \n",
+    "        return new_gen\n",
+    "\n",
+=======
+    "    \"\"\"\n",
+    "    def __init__(self, generations, pop_size):\n",
+    "        self.generations = generations\n",
+    "        self.pop_size = pop_size\n",
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+    "    \"\"\"\n",
+    "    This method should solve the TSP.\n",
+    "    @param tsp_data: the data describing the problem.\n",
+    "    @return the optimized product sequence.\n",
+    "    \"\"\"\n",
+    "    def solve_tsp(self, tsp_data):\n",
+<<<<<<< HEAD
+    "        n = self.pop_size\n",
+    "\n",
+    "        # store the best at every step\n",
+    "        best_cost = float(\"inf\")\n",
+    "        best = None\n",
+    "\n",
+    "        # store original mutation prob\n",
+    "        orig_mut_p = self.mut_prob\n",
+    "        lowest_costs = []\n",
+    "        avg_costs = []\n",
+    "\n",
+    "        # amount of (top) performers from current generation that are kept\n",
+    "        peaks = 5\n",
+    "\n",
+    "        population = self.initialize_population(tsp_data)\n",
+    "        assert len(population) == n, \"[SOLVE TSP] Population generated of size different than what is expected\"\n",
+    "        for _ in range(self.generations):\n",
+    "            assert not isinstance(population[0][0], float), \"[SOLVE TSP] Pop contains floats instead of ints\"\n",
+    "            costs = [self.cost(tsp_data, population[i]) for i in range(n)]\n",
+    "            # best member of current generation is compared to best of all time\n",
+    "            c_cost = np.min(costs)\n",
+    "            lowest_costs.append(c_cost)\n",
+    "            avg_c_cost = np.mean(costs)\n",
+    "            avg_costs.append(avg_c_cost)\n",
+    "            #print(c_cost, avg_c_cost)\n",
+    "            if c_cost < best_cost:\n",
+    "                best_cost = c_cost\n",
+    "                best = population[np.argmin(costs)]\n",
+    "\n",
+    "            # store top #peak (different) performers\n",
+    "            # (by means of roulette wheel selection)\n",
+    "            scores = [(10000 / costs[j]) for j in range(n)]\n",
+    "            total_fit = np.sum(scores)\n",
+    "            cummulative = [0 for i in range(n)]\n",
+    "            # calculate cummulative scores\n",
+    "            for i in range(n):\n",
+    "                if i == 0:\n",
+    "                    cummulative[i] = scores[i]\n",
+    "                else:\n",
+    "                    cummulative[i] = cummulative[i - 1] + scores[i]\n",
+    "\n",
+    "            top = [None for i in range(peaks)]\n",
+    "            # top performer is picked with certainty\n",
+    "            if peaks > 0:\n",
+    "                top[0] = population[np.argmin(costs)]\n",
+    "                \n",
+    "            for i in range(1, peaks):\n",
+    "                cut = total_fit * self.rng.random()\n",
+    "                index = np.min(np.where(cummulative > cut))\n",
+    "                top[i] = population[index]\n",
+    "            \n",
+    "            # generate offspring\n",
+    "            population = self.generate_offspring(tsp_data, population, costs)\n",
+    "            if self.elitist:\n",
+    "                for i in range(peaks):\n",
+    "                    population[i] = top[i]\n",
+    "\n",
+    "            # adaptive elitism and mutation rate\n",
+    "            if _ > 100:\n",
+    "                # increase mutation probability if we get stuck in a local optimum\n",
+    "                if lowest_costs[_ - 101] == lowest_costs[_ - 1]:\n",
+    "                    self.mut_prob = max(self.mut_prob * 1.03, 0.5)\n",
+    "                    peaks = max(peaks - 1, 0)\n",
+    "                else: # until the lowest cost decreases again\n",
+    "                    self.mut_prob = orig_mut_p\n",
+    "                    peaks = min(peaks + 1, 5)\n",
+    "\n",
+    "        self.mut_prob = orig_mut_p\n",
+    "        return best "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "random_seed = 1337"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0, 1, 6, 4, 13, 15, 3, 8, 17, 7, 9, 14, 11, 12, 5, 10, 2, 16] 1343\n"
+     ]
+    }
+   ],
+   "source": [
+    "data = TSPData.read_from_file(\"../data/optimal_tsp\")\n",
+    "ga = GeneticAlgorithm(1000, 100, 0.9, 0.05, random_seed, True)\n",
+    "best = ga.solve_tsp(data)\n",
+    "print(best, ga.cost(data, best))"
+=======
+    "        pass"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "jisvyn52hpusm6snrj0t",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "In my representation, a chromosome will represent a Hamiltonian tour in the following way: it will be composed of genes representing specific products (in the classic problem, cities), where the order of the genes gives the order in which the products are taken.\n",
+    "<br>\n",
+    "As an example, if we had 5 cities (numbered from 1 to 5), a certain tour may be encoded as a chromosome in the following way:\n",
+    "<br>\n",
+    ">$[1, 5, 3, 4, 2]$,\n",
+    "\n",
+    "where the numbers represent genes."
+=======
+   "metadata": {
+    "cellIdentifier": "m92e3owr8ftuc7azbmvv",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "tmchtuhzv3a8ia9r1oqj84",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 5"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "The fitness function will simply be the inverse of the cost of the given tour (1 over the sum of distances between all consecutive products). This is exactly the objective we try to maximize in TSP and represents, thus, a good way to measure fitness (we want to minimze the cost and, hence, maximize 1/cost)."
+=======
+   "metadata": {
+    "cellIdentifier": "7mocvdn3lp1pi2aycz2ww",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "5ht8kjljs7r978ro5wqa7u",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 6"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "Parents are selected by means of tournament (which seemed to perform better than roulette wheel selection - but which I still nevertheless use in the elitism selection). A tournament of size 5 worked best from the values I tested."
+=======
+   "metadata": {
+    "cellIdentifier": "r3bveb984jkk1z2cb5bpoh",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "ojeh9p1v1opmltga4dnu",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 7"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "I implemented 2 different crossover operators and one mutation operator.\n",
+    "<br>Crossover:\n",
+    "- Genetic Edge Recombination crossover (ER), which gave the best results in the paper I used for research, but which ultimately seemed to perform poorly here (likely because the implementation is harder to make efficient);\n",
+    "- Order crossover (OX1), which performed significantly better (and faster) than the former.\n",
+    "\n",
+    "Mutation:\n",
+    "- Inversion Mutation (IVM) operator, which, according to the paper, performs the best (though doesn't necessarily converge the quickest). Still, in practice, it works fine."
+=======
+   "metadata": {
+    "cellIdentifier": "ijd0t8h0lhptqzfocbme6p",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "ikq223q7dvxa34f92ggcf",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 8"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "0hkhkcufgjvoc0zzh1i0gk",
+    "vocVersion": 1.1
+   },
+   "source": [
+<<<<<<< HEAD
+    "The manner through which I avoid local minima is (at least) two-fold: I use mutation (with a relatively low probability of occurence initially) and adaptive probability (if 100 generations ago the lowest cost was the same as current one, I increase the mutation probability multiplicatively by 1.03)."
+=======
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "qv3smm7f5vc6cmaxomep2",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 9"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "l84kjslp2an8hilhkly487",
+    "vocVersion": 1.1
+   },
+   "source": [
+<<<<<<< HEAD
+    "Elitism, in the context of genetic algorithms, is a technique revolving around the persistence of certain members of the current population into the following generation(s), directly.\n",
+    "\n",
+    "In my implementation, elitism is optional (a True/False parameter). I believe it's not necessarily needed, but because the objective (or the topography of the search space for possible solutions) doesn't change it's a good way of reaching convergence quicker."
+=======
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "fyzng8fpogrl6ns69nmcif",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 10"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 17,
+=======
+   "execution_count": 0,
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "wnyfxw4vey8c54zc41qc",
+    "vocVersion": 1.1
+   },
+<<<<<<< HEAD
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0, 1, 6, 4, 13, 15, 3, 8, 7, 17, 9, 14, 11, 12, 5, 10, 2, 16] 1343\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Please keep your parameters for the Genetic Algorithm easily changeable here\n",
+    "population_size = 80\n",
+    "generations = 600\n",
+=======
+   "outputs": [],
+   "source": [
+    "# Please keep your parameters for the Genetic Algorithm easily changeable here\n",
+    "population_size = 20\n",
+    "generations = 20\n",
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+    "persist_file = \"./../data/optimal_tsp\"\n",
+    "\n",
+    "# Setup optimization\n",
+    "tsp_data = TSPData.read_from_file(persist_file)\n",
+<<<<<<< HEAD
+    "ga = GeneticAlgorithm(generations, population_size, 0.9, 0.05, random_seed, True)\n",
+    "\n",
+    "# Run optimzation and write to file\n",
+    "solution = ga.solve_tsp(tsp_data)\n",
+    "tsp_data.write_action_file(solution, \"./../data/tsp_solution.txt\")\n",
+    "print(solution, ga.cost(tsp_data, solution))"
+=======
+    "ga = GeneticAlgorithm(generations, population_size)\n",
+    "\n",
+    "# Run optimzation and write to file\n",
+    "solution = ga.solve_tsp(tsp_data)\n",
+    "tsp_data.write_action_file(solution, \"./../data/tsp_solution.txt\")"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {},
+   "source": [
+    "The length of my solution is $1343$. In all my iterations, regardless of (adaptable) mutation rate, elitism, crossover probability, tournament size, random seed, population size and number of generations, I have never gotten a better value. If this is not optimal, it (should be) is at the very least quite close to this value (and the true optimal must then be somehow quite different from the solution I've gotten).\n",
+    "\n",
+    "[Needs visualization(s)]"
+=======
+   "metadata": {
+    "cellIdentifier": "pwss6lm79ms84iepunsceo",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Put your code extra blocks above (if any) and write your answer here._"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "oh139iajzqqctlcs37kms",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "## Part 2: Path Finding Through Ant Colony Optimization\n",
+    "### 2.2 Observing the Problem"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "a9f228p4jfsbj4541m4yqe",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 11"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {
+    "cellIdentifier": "gylilr365j4gjzj42s1fl",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+=======
+   "metadata": {},
+   "source": [
+    "- The purpose of Ant Colony Optimization is to tackle difficult and complex problems through algorithms that take individual behaviour and model the outcome at group level. In is inspired from biology where it imitates how real ants find efficient routes by leaving pheromone trails behind them. This pheromone trail is allows the ants to find the shortest path from all the possible paths. As mentioned in the lectures, the individual parts are not necessarly aware of the bigger goal of the group, there is not leader or centralized coordination. \n",
+    "- The ACO algorithm is usually used when trying to find the shortest path algorithm. Apart from other shortest path algorithm (like Dijkstra), ACO is useful when the load/path can dynamically change (they are are not fixed), such as, for example, when moderating the trafic during rush hour. "
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "04ouc4cpmcfckick6d946nl",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 12"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {
+    "cellIdentifier": "9hy1lgva048sligvyuxxe",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+=======
+   "metadata": {},
+   "source": [
+    "- One such \"topographical\" feature could be dead ends. They are difficult to deal with because the ants will take time to explore this possible branch that ultimatly does not lead to any goal. This in perspective increases the overall search time and may mislead the entire algorithm very early on. \n",
+    "- Another such feature could be the presence of circular passages in the system. This could lead to ants looping in the same circular passage due to the pheromone levels increasing on that same path. This can be very misleading for future ants who will take the path with the highest pheromone level (which in a circular case could be suboptimal).\n",
+    "- A third \"topographical\" feature could be an intersection with many branches (like one path that leads to many other paths at the same time). Because there are so many options, the search will be harder for the ants, who have to split up and try many alternative paths. This will take a lot of time (increase the search time) before the pheromone could properly build on the right path and show the shortest path. "
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "2gmhgqh27qkz7jd0s052j",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 13"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {
+    "cellIdentifier": "rzyb6snk8ylpsryq6jdiq",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here. You can also use LaTeX notation in a Jupyter Notebook._"
+=======
+   "metadata": {},
+   "source": [
+    "- As mentioned in the lecture, the equation for the amount of pheromone dropped by the ants is: <br>\n",
+    "<br>\n",
+    "        Δτᵢᵏ = Q / Lᵢ <br>\n",
+    "<br>\n",
+    "where the leftmost term is the pheromone left on the i-th link by ant k; and in the rightmost term: Q is a constant that controls the amount of deposited pheromone and Lᵢ is the link length. This formula basically means that shorter links receive more pheromone than longer links\n",
+    "<br>\n",
+    "- The pheromones are needed because due to this substance the future ants can make an informed decision for the path they are about to take (it is like an indirect communication between them). The path with a higher pheromone level is more likely to be chosen by the next ant, and the next one after that and so on - which, in time, the highest pheromone path represents the (hopefully) shortest path between the start point and end point. "
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "3fkmieo2c6p1f3yu6a07wm",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 14"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {
+    "cellIdentifier": "ih5o6y5ykuwo5bvuuraz",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here. You can also use LaTeX notation in a Jupyter Notebook._"
+=======
+   "metadata": {},
+   "source": [
+    "- As mentioned in the lectures, the formula for the evaporation is \"The amount of pheromone currently on path ij corresponds to the amount of pheromone existing on it, decreased by the quantity proportional to the evaporation constant, plus the sum of all pehromone released on that link by all ants that passed by it this round.\" Thus, the formula would be this one: <br>\n",
+    "<br>\n",
+    "      τᵢⱼ = (1-p) * τᵢⱼ +  ∑ₖ₌₁ᵐ Δτᵢᵏ ( where Δτᵢᵏ = Q / Lᵢ - see above for details) <br>\n",
+    "<br>\n",
+    "where p = the evaporation constant \n",
+    "- In each iteration, an amount of p * τᵢⱼ will evaporate (amount of pheromone existing on it - τᵢⱼ - subtracted by the quantity proportional to the evaporation constant - p * τᵢⱼ)\n",
+    "- The purpose of this evaporation of the pheromone over time is to prevent the algorithm from getting stuck on a path that looked good only in the beginning and instead explore other possibilities. Without this evaporation, the algorithm might get stuck on a path that it's not optimal, but would in that case have the highest pheromone level (which is not what we want). "
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "qx8jxemmvezdgxlp3o9eq",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 2.3 Implementing the Ant Algorithm"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 9,
+=======
+   "execution_count": 0,
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "tbq4p7qu5v00q9xpsn4jnel",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": [
+    "# Class that represents the basic Ant functionality\n",
+    "class StandardAnt:\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Constructor of a StandardAnt taking a Maze and PathSpecification\n",
+    "    @param maze: the Maze where the ant will try to find a route\n",
+    "    @param path_specification: the PathSpecification consisting of a start and an end coordinate\n",
+    "    \"\"\"\n",
+    "    def __init__(self, maze, path_specification):\n",
+    "        self.maze = maze\n",
+    "        self.start = path_specification.get_start()\n",
+    "        self.end = path_specification.get_end()\n",
+    "        self.current_position = self.start\n",
+    "        self.rand = random\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Method that performs a single complete run through the maze by the ant\n",
+    "    @return the route found by the ant\n",
+    "    \"\"\"\n",
+    "    def find_route(self):\n",
+    "        route = Route(self.start)\n",
+    "        pass\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 10,
+=======
+   "execution_count": 0,
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "t0qvuuiksv9ssvgmop40z",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": [
+    "# Class that holds all of the maze data.\n",
+    "# This includes the pheromones, the open and blocked tiles in the system,\n",
+    "# and the starting and end coordinates for the ants.\n",
+    "class Maze:\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Constructor of a Maze\n",
+    "    @param walls: array of ints representing the accessible (1) and inaccessible (0) tiles\n",
+    "    @param width: the width (horizontal dimension) of the Maze\n",
+    "    @param length: the length (vertical dimension) of the Maze\n",
+    "    \"\"\"\n",
+    "    def __init__(self, walls, width, length):\n",
+    "        self.walls = walls\n",
+    "        self.length = length\n",
+    "        self.width = width\n",
+    "        self.start = None\n",
+    "        self.end = None\n",
+    "        self.initialize_pheromones()\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Initialize pheromones on all tiles of the Maze\n",
+    "    \"\"\"\n",
+    "    def initialize_pheromones(self):\n",
+    "        pass\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Reset the Maze for a new shortest path problem\n",
+    "    \"\"\"\n",
+    "    def reset(self):\n",
+    "        self.initialize_pheromones()\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Update the pheromones along a certain route according to a certain Q\n",
+    "    @param route: the route taken by an ant\n",
+    "    @param q: the normalization factor for the amount of dropped pheromone\n",
+    "    \"\"\"\n",
+    "    def add_pheromone_route(self, route, q):\n",
+    "        pass\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Update pheromones for a list of routes\n",
+    "    @param routes: a list of routes taken by the ants\n",
+    "    @param q: the normalization factor for the amount of dropped pheromone\n",
+    "    \"\"\"\n",
+    "    def add_pheromone_routes(self, routes, q):\n",
+    "        for r in routes:\n",
+    "            self.add_pheromone_route(r, q)\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Evaporate pheromone\n",
+    "    @param rho: the evaporation factor\n",
+    "    \"\"\"\n",
+    "    def evaporate(self, rho):\n",
+    "        pass\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Getter for the width of the maze\n",
+    "    @return the width of the maze\n",
+    "    \"\"\"\n",
+    "    def get_width(self):\n",
+    "        return self.width\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Getter for the length of the maze\n",
+    "    @return the length of the maze\n",
+    "    \"\"\"\n",
+    "    def get_length(self):\n",
+    "        return self.length\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Returns a the amount of pheromones on the neighbouring positions (N/S/E/W)\n",
+    "    @param position: the coordinate where we need to check the surrounding pheromones\n",
+    "    @return the pheromones on the neighbouring coordinates.\n",
+    "    \"\"\"\n",
+    "    def get_surrounding_pheromone(self, position):\n",
+    "        pass\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Getter for the pheromones on a specific coordinate.\n",
+    "    If the position is not in bounds returns 0\n",
+    "    @param pos: coordinate for the poition of interest\n",
+    "    @return the amount of pheromone at the specified poition\n",
+    "    \"\"\"\n",
+    "    def get_pheromone(self, pos):\n",
+    "        pass\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Check whether a coordinate lies in the bounds of the current maze\n",
+    "    @param position: the position that we need to check\n",
+    "    @return true if the coordinate lies within the current maze\n",
+    "    \"\"\"\n",
+    "    def in_bounds(self, position):\n",
+    "        return position.x_between(0, self.width) and position.y_between(0, self.length)\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Representation of Maze as defined by the input file format.\n",
+    "    @return the human-readable representation of a maze\n",
+    "    \"\"\"\n",
+    "    def __str__(self):\n",
+    "        string = \"\"\n",
+    "        string += str(self.width)\n",
+    "        string += \" \"\n",
+    "        string += str(self.length)\n",
+    "        string += \" \\n\"\n",
+    "        for y in range(self.length):\n",
+    "            for x in range(self.width):\n",
+    "                string += str(self.walls[x][y])\n",
+    "                string += \" \"\n",
+    "            string += \"\\n\"\n",
+    "        return string\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Method that builds a maze from a file\n",
+    "    @param file_path: path to the file which stores the maze\n",
+    "    @return a maze object with pheromones initialized to 0s on inaccessible and 1s on accessible tiles\n",
+    "    \"\"\"\n",
+    "    @staticmethod\n",
+    "    def create_maze(file_path):\n",
+    "        try:\n",
+    "            f = open(file_path, \"r\")\n",
+    "            lines = f.read().splitlines()\n",
+    "            dimensions = lines[0].split(\" \")\n",
+    "            width = int(dimensions[0])\n",
+    "            length = int(dimensions[1])\n",
+    "            \n",
+    "            #make the maze_layout\n",
+    "            maze_layout = []\n",
+    "            for x in range(width):\n",
+    "                maze_layout.append([])\n",
+    "            \n",
+    "            for y in range(length):\n",
+    "                line = lines[y+1].split(\" \")\n",
+    "                for x in range(width):\n",
+    "                    if line[x] != \"\":\n",
+    "                        state = int(line[x])\n",
+    "                        maze_layout[x].append(state)\n",
+    "            print(\"Ready reading maze file \" + file_path)\n",
+    "            return Maze(maze_layout, width, length)\n",
+    "        except FileNotFoundError:\n",
+    "            print(\"Error reading maze file \" + file_path)"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 11,
+=======
+   "execution_count": 0,
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "ua7f5hf1rv9ilku9mh61zs",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": [
+    "# Class representing the complete ACO algorithm.\n",
+    "# Finds shortest path between two points in a maze according to a path specification.\n",
+    "class AntColonyOptimization:\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Constructs a new optimization object using the ant algorithm\n",
+    "    @param maze: the maze (environment) for ants\n",
+    "    @param ants_per_gen: the number of ants per generation (between update of pheromones)\n",
+    "    @param generations: the total number of generations of ants (pheromone updates)\n",
+    "    @param q: the normalization factor for the amount of dropped pheromone\n",
+    "    @param evaporation: the evaporation factor for the pheromones\n",
+    "    \"\"\"\n",
+    "    def __init__(self, maze, ants_per_gen, generations, q, evaporation):\n",
+    "        self.maze = maze\n",
+    "        self.ants_per_gen = ants_per_gen\n",
+    "        self.generations = generations\n",
+    "        self.q = q\n",
+    "        self.evaporation = evaporation\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Loop that starts the shortest path process\n",
+    "    @param path_specification: description of the route we wish to optimize\n",
+    "    @return the optimized route according to the ACO algorithm\n",
+    "    \"\"\"\n",
+    "    def find_shortest_route(self, path_specification):\n",
+    "        self.maze.reset()\n",
+    "        pass"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 12,
+=======
+   "execution_count": 0,
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "q1hjqgk3nxyvegm4iorjf",
+    "vocVersion": 1.1
+   },
+<<<<<<< HEAD
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Ready reading maze file ./../data/hard_maze.txt\n",
+      "Time taken: 0.0\n"
+     ]
+    },
+    {
+     "ename": "AttributeError",
+     "evalue": "'NoneType' object has no attribute 'size'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[31m---------------------------------------------------------------------------\u001b[39m",
+      "\u001b[31mAttributeError\u001b[39m                            Traceback (most recent call last)",
+      "\u001b[36mCell\u001b[39m\u001b[36m \u001b[39m\u001b[32mIn[12]\u001b[39m\u001b[32m, line 16\u001b[39m\n\u001b[32m     13\u001b[39m shortest_route = aco.find_shortest_route(spec)\n\u001b[32m     15\u001b[39m \u001b[38;5;28mprint\u001b[39m(\u001b[33m\"\u001b[39m\u001b[33mTime taken: \u001b[39m\u001b[33m\"\u001b[39m + \u001b[38;5;28mstr\u001b[39m((\u001b[38;5;28mint\u001b[39m(\u001b[38;5;28mround\u001b[39m(time.time() * \u001b[32m1000\u001b[39m)) - start_time) / \u001b[32m1000.0\u001b[39m))\n\u001b[32m---> \u001b[39m\u001b[32m16\u001b[39m \u001b[38;5;28mprint\u001b[39m(\u001b[33m\"\u001b[39m\u001b[33mRoute size: \u001b[39m\u001b[33m\"\u001b[39m + \u001b[38;5;28mstr\u001b[39m(\u001b[43mshortest_route\u001b[49m\u001b[43m.\u001b[49m\u001b[43msize\u001b[49m()))\n\u001b[32m     18\u001b[39m shortest_route.write_to_file(\u001b[33m\"\u001b[39m\u001b[33m./../data/hard_solution.txt\u001b[39m\u001b[33m\"\u001b[39m)\n",
+      "\u001b[31mAttributeError\u001b[39m: 'NoneType' object has no attribute 'size'"
+     ]
+    }
+   ],
+=======
+   "outputs": [],
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "source": [
+    "# Please keep your parameters for the ACO easily changeable here\n",
+    "gen = 1\n",
+    "no_gen = 1\n",
+    "q = 1600\n",
+    "evap = 0.1\n",
+    "\n",
+    "# Construct the optimization objects\n",
+    "maze = Maze.create_maze(\"./../data/hard_maze.txt\")\n",
+    "spec = PathSpecification.read_coordinates(\"./../data/hard_coordinates.txt\")\n",
+    "aco = AntColonyOptimization(maze, gen, no_gen, q, evap)\n",
+    "\n",
+    "start_time = int(round(time.time() * 1000))\n",
+    "shortest_route = aco.find_shortest_route(spec)\n",
+    "\n",
+    "print(\"Time taken: \" + str((int(round(time.time() * 1000)) - start_time) / 1000.0))\n",
+    "print(\"Route size: \" + str(shortest_route.size()))\n",
+    "\n",
+    "shortest_route.write_to_file(\"./../data/hard_solution.txt\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "xum0fea643mxh8obf7md1",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 2.4 Upgrading Your Ants with Intelligence"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "hd2ek2ggerbro7o21dki0p",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 15"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 0,
+   "metadata": {
+    "cellIdentifier": "564c6g34ow9kj0qgkht1w",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": [
+    "# Class that represents the intelligent Ant\n",
+    "class IntelligentAnt:\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Constructor of an IntelligentAnt taking a Maze and PathSpecification\n",
+    "    @param maze: the Maze where the ant will try to find a route\n",
+    "    @param path_specification: the PathSpecification consisting of a start and an end coordinate\n",
+    "    \"\"\"\n",
+    "    def __init__(self, maze, path_specification):\n",
+    "        self.maze = maze\n",
+    "        self.start = path_specification.get_start()\n",
+    "        self.end = path_specification.get_end()\n",
+    "        self.current_position = self.start\n",
+    "        self.rand = random\n",
+    "\n",
+    "    \"\"\"\n",
+    "    Method that performs a single complete run through the maze by the ant\n",
+    "    @return the route found by the ant\n",
+    "    \"\"\"\n",
+    "    def find_route(self):\n",
+    "        route = Route(self.start)\n",
+    "        pass\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "a375xg60vnmnuxggctblai",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Put your extra code blocks above (if any) and write your answer here._"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "deofvtnximir73f7pzdtjn",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 2.5 Parameter Optimization"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "f4zely73w0ds9l5bbfqyrn",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 16"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 0,
+   "metadata": {
+    "cellIdentifier": "ykx6lszk40i0hf6ik1qztve",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "go7z9edwnetb3l3xl0qh5",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Put your code blocks above (if any) and write your answer here._"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "e93shrii9a4sy77ldjpgc",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 17"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 0,
+   "metadata": {
+    "cellIdentifier": "ez5yv5q972ibmk0ennjoh",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "51itrbt6rv8uw51kw055wr",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Put your code blocks above (if any) and write your answer here._"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "r83rowzo9hhd364z8n9lof",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 2.6 The Final Route"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "azzje1uurkxguqd8tqemf",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 18"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 0,
+   "metadata": {
+    "cellIdentifier": "xlz6bfxuavs1xlbc4ak7vg",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "rl8zow6y9558jbkodyc96",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Put your code blocks above (if any) and write your answer here._"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "76ydvwn6dq2vd5uaa5of8",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 2.7 Synthesis"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "zx41slehhbc1x6yusz95a",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 19"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 0,
+   "metadata": {
+    "cellIdentifier": "2xusohywpqxmagpk56d99i",
+    "vocVersion": 1.1
+   },
+   "outputs": [],
+   "source": [
+    "# Please keep your parameters for the synthesis part easily changeable here\n",
+    "gen = 1\n",
+    "no_gen = 1\n",
+    "q = 1000\n",
+    "evap = 0.1\n",
+    "\n",
+    "persist_file = \"./../tmp/my_tsp\"\n",
+    "tsp_path = \"./../data/tsp_products.txt\"\n",
+    "coordinates = \"./../data/hard_coordinates.txt\"\n",
+    "\n",
+    "# Construct optimization\n",
+    "maze = Maze.create_maze(\"./../data/hard_maze.txt\")\n",
+    "tsp_data = TSPData.read_specification(coordinates, tsp_path)\n",
+    "aco = AntColonyOptimization(maze, gen, no_gen, q, evap)\n",
+    "\n",
+    "# Run optimization and write to file\n",
+    "tsp_data.calculate_routes(aco)\n",
+    "tsp_data.write_to_file(persist_file)\n",
+    "\n",
+    "# Read from file and print\n",
+    "tsp_data2 = TSPData.read_from_file(persist_file)\n",
+    "print(tsp_data == tsp_data2)\n",
+    "\n",
+    "# Solve TSP using your own paths file\n",
+    "ga = GeneticAlgorithm(generations, population_size)\n",
+    "solution = ga.solve_tsp(tsp_data2)\n",
+    "tsp_data2.write_action_file(solution, \"./../data/tsp_solution.txt\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "ptngcgrf1icmkajbrtc4",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Put your extra code blocks above (if any) and write your answer here._"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "eu8n7xcs9sds1dc4g9thr",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "## Part 3: Open Questions\n",
+    "### 3.1 Reflection"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "tjqage6akhyuoeg93yj8t",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 20"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "j7x04oa52wgj0zouml5",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+=======
+   "metadata": {},
+   "source": [
+    "- "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "metadata": {
+    "cellIdentifier": "92ahdv27o7mm62p5epyyb",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 21"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {
+    "cellIdentifier": "kq3j2zrki2tsi8w07dy6",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here._"
+=======
+   "metadata": {},
+   "source": [
+    "- No, we do not always want the strongest to survive. This is because if the algorithm/selection always chooses the current best individual, then the population can loose diversity very quickly (and that's not what we want). The consequences of such a choice would be that many individuals will become too similar and the algorithm may stop too early to a local optimum (instead of exploring other options that may hold better solutions). This is why variation is important, not just the strongest individual. \n",
+    "- One mitigation strategy (present in the lecture) would be to use ranking selection. This is a method that, instead of choosing the selection based on raw fitness values, the individuals are selected based on a rank in the population. This choice based on a rank will reduce the chance of a single individual dominating too much (and thus allow for diversity).\n",
+    "- Another mitigation strategy (also present in the lecture) is the Roulette-Wheel selection. This is a strategy that introduces randomness (basically a roulette) - that helps with maintaining variation (especially in the beginning) and exploring other possible options. In this case, the individuals are chosen based on a probability proportional to their fitness - which means that stronger individuals have a more likely chance of being chosen, BUT it also alows for weaker individuals to still have a chance. "
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "k36enfpsu1mkdr7pnst6j",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 3.2 Pen and Paper"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "cpzybmq0ui7l11ozahpgl",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 22"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+<<<<<<< HEAD
+   "metadata": {
+    "cellIdentifier": "4o5eg8n5zzia7txqprc6yi",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "_Write your answer here. You can also choose to simply include a photo of your solution._"
+=======
+   "metadata": {},
+   "source": [
+    "- In this scenario, we want to minimize the price (save money) while also getting the highest nutritional value. Therefore the optimal/best point would find itself in the area of the top left corner, while the worst option would be in the bottom right corner. <br>\n",
+    "- The first Pareto frontier (the points not dominated by anything) is point (1, 6) and point (3, 9). <br>The second Pareto frontier is  made out of the points: (1, 1) - dominated by point (1, 6); (2, 4) - dominated by point (1, 6); (4, 7) - dominated by point (3, 9); (7, 8) - dominated by point (3, 9). <br>The third Pareto frontier is made out of the points: (4, 2) - dominated by (3, 9) and (4, 7); (6, 6) - dominated by (3, 9), (4, 7); (9, 7) - dominated by the points (3, 9), (4, 7), (7, 8). <br>And the fourth and final Pareto frontier is made by the point (8, 2) - dominated by all except (1, 1) and (9, 7)\n",
+    "- The robot will first pick the items from the first frontier (which are the items at points (1, 6) and (3, 9)). Then we are left with 2 more items. It will then select from the second frontier (which has 4 objects so it will pick two of them) by using the method \"crowding distance\", where a bigger value is preffered since it preserves diversity. <br>\n",
+    "- If we do the table with the points from the second frontier (1, 1), (2, 4), (4, 7), (7, 8) then we would get the results in the following order: inf; 9/8; 9/8; inf. Based on the fact that we have two more items to choose, the robot will pick object (1, 1) and (7, 8) since they have the widest diversity over the whole range. \n",
+    "- Therefore, the robot will pick the items: (1, 6), (3, 9), (1, 1) and (7, 8)\n"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "udko014us5dzhegrsw4f1h",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### 3.3 Division of Work"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "m29py8y5ei5gcngtxzdjp",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "#### Question 23"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "vh0fmvm9gsodbv4k9gpmn4",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "\n",
+    "|          Component          |  Name A   |  Name B   |  Name C   |  Name D   |\n",
+    "|-----------------------------|-----------|-----------|-----------|-----------|\n",
+    "| Code (design)               |     A     |     B     |     C     |     D     |\n",
+    "| Code (implementation)       |     A     |     B     |     C     |     D     |\n",
+    "| Code (validation)           |     A     |     B     |     C     |     D     |\n",
+    "| Experiments (execution)     |     A     |     B     |     C     |     D     |\n",
+    "| Experiments (analysis)      |     A     |     B     |     C     |     D     |\n",
+    "| Experiments (visualization) |     A     |     B     |     C     |     D     |\n",
+    "| Report (original draft)     |     A     |     B     |     C     |     D     |\n",
+    "| Report (reviewing, editing) |     A     |     B     |     C     |     D     |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "7i4y7iazqdmzkkrdg4qg7",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "### References"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "cellIdentifier": "cz2v26fsbolna6jlj70fio",
+    "vocVersion": 1.1
+   },
+   "source": [
+    "<div style=\"background-color:#f1be3e\">\n",
+    "\n",
+    "**If you made use of any non-course resources, cite them below.**"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+<<<<<<< HEAD
+   "display_name": "ci-lab-assignments",
+=======
+   "display_name": "Python 3 (ipykernel)",
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+<<<<<<< HEAD
+   "version": "3.12.12"
+=======
+   "version": "3.8.16"
+>>>>>>> 0291e25251f85b7ad1b37ba02670a9c106214e34
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
