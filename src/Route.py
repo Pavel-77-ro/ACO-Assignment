@@ -42,7 +42,7 @@ class Route:
         return self.start
 
     """
-    Function that checks whether a route is shoter than another route
+    Function that checks whether a route is shorter than another route
     @param other: the route that we want to compare
     @return true if the current route is shorter
     """
